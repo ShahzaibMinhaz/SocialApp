@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container"><br>
+    <div class="row">
+        <div class="col-lg-1">
+
+        </div>
+
+        <!-- post center side  -->
+        <div class="col-lg-9 p-2">
+            <!-- <form action="" method="POST" class="border p-3" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{form.as_p}}
+                    <input class="btn btn-primary mt-2" type="submit" name="Post" id="Post" value="Create Post">
+                </form>  -->
+            {% for post in Post %}
+            {% if post.user == request.user %}
+            {% if post.postImage %}
+            <br>
+            <div class="card w-100 p-2" style="width: 18rem;">
+                <h4 class="p-2 text-uppercase">{{post.user}}</h4>
+
+                <img class="card-img-top" src="media/{{post.postImage}}" alt="Card image cap">
+                <hr>
+                <div class="card-body">
+                    <p class="card-text">{{ post.postText }}</p>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
+                    {{ post.postLikes.all }}
+                    <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
+                </div>
+            </div>
+            {% elif post.postImage == "" %}
+            <br>
+            <div class="card w-100 p-2" style="width: 18rem;">
+                <h4 class="p-2 text-uppercase">{{post.user}}</h4>
+                <div class="card-body">
+                    <p class="card-text">{{ post.postText }}</p>
+                </div>
+                <div class="row">
+                    <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
+                    <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+            {% endfor %}
+
+            <!-- <br><div class="card w-100" style="width: 18rem;">
+                    <div class="card-body">
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <br><div class="card w-100" style="width: 18rem;">
+                    <img class="card-img-top" src="{% static 'images/icons/favicon.ico' %}" alt="Card image cap">
+                    <hr>
+                    <div class="card-body">
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+                <br><div class="card w-100" style="width: 18rem;">
+                    <img class="card-img-top" src="{% static 'images/icons/favicon.ico' %}" alt="Card image cap">
+                    <hr>
+                    <div class="card-body">
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div> -->
+        </div>
+
+        <!-- side bar  -->
+        <div class="col-lg-1">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Featured
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="">News Feeds</a></li>
+                    <li class="list-group-item active "><a href="">My post</a></li>
+                    <li class="list-group-item "><a href="">Find Others</a></li>
+                    <li class="list-group-item"><a href="">Friend Request</a></li>
+                    <!-- <li class="list-group-item"><a href=""></a> Dapibus ac facilisis in</li>
+                      <li class="list-group-item"><a href=""></a> Vestibulum at eros</li> <li class="list-group-item">Cras justo odio</li>
+                      <li class="list-group-item"><a href=""></a> Dapibus ac facilisis in</li>
+                      <li class="list-group-item"><a href=""></a> Vestibulum at eros</li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content  %}

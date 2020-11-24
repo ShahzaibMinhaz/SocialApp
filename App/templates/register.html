@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <!-- <h1 class="w-50 m-auto">REGISTER</h1><br><br> -->
+    <div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100 w-35">
+				<form class="login100-form validate-form" method="POST">
+				{% csrf_token %}
+					<span class="login100-form-title p-b-26">
+						SIGN UP
+					</span>
+					<span class="login100-form-title p-b-48">
+						<!-- <i class="zmdi zmdi-font"></i> -->
+                    </span>
+                    
+                    <div class="wrap-input100 validate-input">
+						{{form.username}}
+						<span class="focus-input100" data-placeholder="UserName"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input" data-validate = "Valid email is: a@b.c">
+						{{form.email}}
+						<span class="focus-input100" data-placeholder="Email"></span>
+                    </div>
+                    
+
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+						{{form.password1}}
+						<span class="focus-input100" data-placeholder="Password"></span>
+                    </div>
+                    <div class="wrap-input100 validate-input" data-validate="Enter password">
+						<span class="btn-show-pass">
+							<i class="zmdi zmdi-eye"></i>
+						</span>
+						{{form.password2}}
+						<span class="focus-input100" data-placeholder="Re-Enter Password"></span>
+					</div>
+
+					<div class="container-login100-form-btn">
+						<div class="wrap-login100-form-btn">
+							<div class="login100-form-bgbtn"></div>
+							<button class="login100-form-btn">
+								Register
+							</button>
+						</div>
+					</div>
+					{% for message in messages %}
+					<br><br><div class="alert alert-danger alert-dismissible fade show" role="alert">
+					<strong>{{message}}</strong>
+					<!-- <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button> -->
+					</div>
+				{% endfor %}
+					<div class="text-center p-t-115">
+						<span class="txt1">
+							Don’t have an account?
+						</span>
+
+                        
+						<a class="txt2" href="{% url 'login' %}">
+							Sign IN
+						</a>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+    <!-- <div class="container w-50">
+        <form method="POST">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="contact">Contact Number</label>
+                <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Re-enter Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div> -->
+{% endblock content %}
