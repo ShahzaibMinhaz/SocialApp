@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <div class="row m-3">
+        <div class="col-lg-1">
+
+        </div>
+        <div class="col-lg-9">
+          {% for user in user %}
+           {% if user.username != request.user.username %}
+            <div class="row m-5">
+            <div class="w-25 ">
+                <img style="height:150px" src="media/{{user.profile.image}}" alt="">
+                <h6 class="mr-3">{{user.username}}</h6>
+            </div>
+            <div class="w-75 d-flex justify-content-end align-items-center">
+                {% if user.username in friendrequestdata.recieve %}
+                    {{user.name}}
+                {% endif %}
+                <form action="{% url 'friendrequest' user_id=request.user.id friends_id=user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary float-right " type="submit">Send Friend Request</button>
+                </form>
+            </div>
+          </div>
+          <hr>
+           {% endif %}
+          {% endfor %}  
+          {% for friendrequestdata in friendrequestdata %}
+            {{friendrequestdata.recieve}}
+          {% endfor %}
+         
+        </div>
+        <div class="col-lg-1">
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    Featured
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><a href="">News Feeds</a></li>
+                    <li class="list-group-item"><a href="{% url 'mypost' %}">My post</a></li>
+                    <li class="list-group-item active"><a href="{% url 'findothers' %}">Find Others</a></li>
+                    <li class="list-group-item"><a href="">Friend Request</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

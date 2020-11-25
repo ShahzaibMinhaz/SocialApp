@@ -12,7 +12,10 @@ urlpatterns = [
     path('logout',views.logoutuser,name='logout'),
     path('MyPost',views.Mypost,name='mypost'),
     path('addcomments/<int:id>',views.addcomments,name='addcomments'),
-    path('delete_comment/<int:id>',views.delete_comment,name='delete_comment')
+    path('delete_comment/<int:id>',views.delete_comment,name='delete_comment'),
+    path('findothers',views.findothers,name='findothers'),
+    path('friendrequest/<int:user_id>/<int:friends_id>',views.sendfriendrequset,name='friendrequest'),
+    path('getfriendrequest',views.getfriendrequest,name='getfriendrequest')
 ]
 
 if settings.DEBUG:

@@ -1,11 +1,17 @@
 from django.shortcuts import render,redirect
-from .forms import CreateUserForm,UpdateUserForm,Userupdateprofile,CreatePost,CommentsPost
 from django.contrib import messages
-from django.contrib.auth import authenticate,login as auth_login,logout
+from django.contrib.auth import (authenticate,
+                                 login as auth_login,logout,
+                                 update_session_auth_hash)
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import update_session_auth_hash
-from .models import profile as pf,Post,Comments
+
+from .forms import (CreateUserForm,
+                    UpdateUserForm,
+                    Userupdateprofile,
+                    CreatePost,
+                    CommentsPost)
+from .models import profile as pf,Post,Comments,friendrequest
 
 # Create your views here.
 
@@ -110,13 +116,14 @@ def home(request):
     }
     return render(request,'home.html',context)
 
+@login_required
 def Mypost(request):
     post = Post.objects.all()
     context = {
         'Post':post
     }
     return render(request,'MyPost.html',context)
-
+@login_required
 def addcomments(request,id):
     getPost = Post.objects.get(pk=id)
     print(id)
@@ -130,8 +137,30 @@ def addcomments(request,id):
             myform.save()
             return redirect('/')
 
+@login_required
 def delete_comment(request,id):
     print(id)
     getcomments = Comments.objects.get(pk=id)
     getcomments.delete()
     return redirect('/')
+
+@login_required
+def findothers(request):
+    user = User.objects.all()
+    friendrequestdata = friendrequest.objects.all()
+    # for user in user:
+    #     print(user.profile.image)
+    #     print(user.username)
+    return render(request,'findothers.html',{'user':user,'friendrequestdata':friendrequestdata})
+
+@login_required
+def sendfriendrequset(request,user_id,friends_id):
+    userdata = User.objects.get(pk=user_id)
+    frienddata = User.objects.get(pk=friends_id)
+    sendrequest = friendrequest.objects.create(send=userdata,recieve=frienddata)
+    print('friend requset send ') 
+    return redirect('/findothers')
+
+def getfriendrequest(request):
+    getfriendrequestdata = friendrequest.objects.all()
+    return render(request,'friendrequest.html',{'getfriendrequestdata':getfriendrequestdata})

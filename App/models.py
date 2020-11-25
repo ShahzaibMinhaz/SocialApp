@@ -22,3 +22,20 @@ class Comments(models.Model):
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     commentText = models.CharField(max_length=50)
 
+    # def __str__(self):
+    #     return self.user.username
+
+class friendrequest(models.Model):
+    send = models.ForeignKey(User,on_delete=models.CASCADE,related_name='sender')
+    recieve = models.ForeignKey(User,on_delete=models.CASCADE,related_name='reciever')
+
+    # def __str__(self):
+    #     return self.send.username
+
+class friends(models.Model):
+    send = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user')
+    recieve = models.ForeignKey(User,on_delete=models.CASCADE,related_name='friend')
+
+    # def __str__(self):
+    #     return self.send,username
+
