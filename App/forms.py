@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import profile,Post
+from .models import profile,Post,Comments
 
 class CreateUserForm(UserCreationForm):
 	email = forms.CharField(widget=forms.EmailInput(attrs={'class': 'input100'}),required=True,)
@@ -31,3 +31,9 @@ class CreatePost(forms.ModelForm):
 	class Meta:
 		model = Post
 		fields = ['postImage','postText']
+
+class CommentsPost(forms.ModelForm):
+	commentText = forms.CharField( label="" ,widget=forms.Textarea(attrs={"placeholder":"Enter Comments",'class':'w-100',"rows":2, "cols":20}))
+	class Meta:
+		model = Comments
+		fields = ['commentText']

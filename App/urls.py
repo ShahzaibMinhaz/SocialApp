@@ -11,7 +11,8 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('logout',views.logoutuser,name='logout'),
     path('MyPost',views.Mypost,name='mypost'),
-    path('comments',views.comments,name='comments')
+    path('addcomments/<int:id>',views.addcomments,name='addcomments'),
+    path('delete_comment/<int:id>',views.delete_comment,name='delete_comment')
 ]
 
 if settings.DEBUG:

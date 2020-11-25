@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect
-from .forms import CreateUserForm,UpdateUserForm,Userupdateprofile,CreatePost
+from .forms import CreateUserForm,UpdateUserForm,Userupdateprofile,CreatePost,CommentsPost
 from django.contrib import messages
 from django.contrib.auth import authenticate,login as auth_login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
-from .models import profile as pf,Post
+from .models import profile as pf,Post,Comments
 
 # Create your views here.
 
@@ -87,9 +87,10 @@ def profile(request,id):
 @login_required
 def home(request):
     PostCreateform = CreatePost()
+    CommentsPostform = CommentsPost()
     if request.method == "POST":
-        print(request.POST)
-        print(request.FILES)
+        # print(request.POST)
+        # print(request.FILES)
         PostCreateform = CreatePost(request.POST,request.FILES)
         if PostCreateform.is_valid():
             myform=PostCreateform.save(commit=False)
@@ -100,9 +101,12 @@ def home(request):
         else:
             print(PostCreateform.errors)
     post = Post.objects.all()
+    comment_Post = Comments.objects.all()
     context = {
         'form':PostCreateform,
-        'Post':post
+        'Post':post,
+        'comment_Post':comment_Post,
+        'Commentform':CommentsPostform
     }
     return render(request,'home.html',context)
 
@@ -113,5 +117,21 @@ def Mypost(request):
     }
     return render(request,'MyPost.html',context)
 
-def comments(request):
-    return render(request,'comments.html')
+def addcomments(request,id):
+    getPost = Post.objects.get(pk=id)
+    print(id)
+    print(request.POST)
+    if request.method == "POST":
+        CommentsPostform = CommentsPost(request.POST)
+        if CommentsPostform.is_valid():
+            myform=CommentsPostform.save(commit=False)
+            myform.post= getPost
+            myform.user=request.user
+            myform.save()
+            return redirect('/')
+
+def delete_comment(request,id):
+    print(id)
+    getcomments = Comments.objects.get(pk=id)
+    getcomments.delete()
+    return redirect('/')

@@ -4,9 +4,7 @@
 <div class="container"><br>
     <div class="row">
         <div class="col-lg-1">
-
         </div>
-
         <!-- post center side  -->
         <div class="col-lg-9 p-2">
             <!-- <form action="" method="POST" class="border p-3" enctype="multipart/form-data">
@@ -18,7 +16,7 @@
             {% if post.user == request.user %}
             {% if post.postImage %}
             <br>
-            <div class="card w-100 p-2" style="width: 18rem;">
+            <div class="card w-75 d-block m-auto p-2" style="width: 18rem;">
                 <h4 class="p-2 text-uppercase">{{post.user}}</h4>
 
                 <img class="card-img-top" src="media/{{post.postImage}}" alt="Card image cap">
@@ -27,21 +25,42 @@
                     <p class="card-text">{{ post.postText }}</p>
                 </div>
                 <div class="row">
-                    <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-                    {{ post.postLikes.all }}
-                    <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
+                    <button type="button"
+                        class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
+                </div>
+                <hr>
+                <h6 class="mb-3"><b>Comments</b></h6>
+                <div class="row">
+                    <div class="col-2 m-auto pr-3">
+                        <img style="height: 50px;" src="media/{{post.user.profile.image}}" alt="">
+                        <h6>{{post.user}}</h6>
+                    </div>
+                    <div class="col-10 m-auto d-flex justify-content-lg-start">
+                        Hello World !
+                    </div>
                 </div>
             </div>
             {% elif post.postImage == "" %}
             <br>
-            <div class="card w-100 p-2" style="width: 18rem;">
+            <div class="card w-75 d-block m-auto p-2" style="width: 18rem;">
                 <h4 class="p-2 text-uppercase">{{post.user}}</h4>
                 <div class="card-body">
                     <p class="card-text">{{ post.postText }}</p>
                 </div>
                 <div class="row">
-                    <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-                    <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
+                    <button type="button"
+                        class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
+                </div>
+                <hr>
+                <h6 class="mb-3"><b>Comments</b></h6>
+                <div class="row">
+                    <div class="col-2 m-auto pr-3">
+                        <img style="height: 50px;" src="media/{{post.user.profile.image}}" alt="">
+                        <h6>{{post.user}}</h6>
+                    </div>
+                    <div class="col-10 m-auto d-flex justify-content-lg-start">
+                        Hello World !
+                    </div>
                 </div>
             </div>
             {% endif %}

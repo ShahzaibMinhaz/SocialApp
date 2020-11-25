@@ -7,18 +7,19 @@
     </div>
     <!-- post center side  -->
     <div class="col-lg-9">
-      <!-- post creation form  -->
-      <form action="" method="POST" class="border p-3" enctype="multipart/form-data">
+      <!-- post creation form starts  -->
+      <form action="" method="POST" class="border p-3 w-75 d-block m-auto" enctype="multipart/form-data"> 
         {% csrf_token %}
         {{form.as_p}}
         <input class="btn btn-primary mt-2" type="submit" name="Post" id="Post" value="Create Post">
       </form>
+      <!-- post creation form starts  -->
 
-      <!-- data rendering of post  -->
+      <!-- post rendering starts -->
       {% for post in Post reversed %}
       {% if post.postImage %}
       <br>
-      <div class="card w-100 p-2" style="width: 18rem;">
+      <div class="card w-75 d-block m-auto p-2" style="width: 18rem;">
         <h4 class="p-2 text-uppercase">{{post.user}}</h4>
         <img class="card-img-top" src="media/{{post.postImage}}" alt="Card image cap">
         <hr>
@@ -27,24 +28,75 @@
         </div>
         <div class="row">
           <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-          <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
         </div>
+        <hr>
+        <h6 class="mb-3"><b>Comments</b></h6>
+        <!-- post comments  -->
+        {% for comments in comment_Post %}
+        {% if post.id == comments.post.id %}
+        {% if comments.user.username == request.user.username %}
+          <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right" aria-hidden="true"></i></a>
+        {% endif %}
+        <div class="row">
+          <div class="col-2 m-auto pr-3">
+            <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
+            <h6>{{ comments.user.username }}</h6> 
+          </div>
+          <div class="col-10 m-auto d-flex justify-content-lg-start">
+            <h6>{{comments.commentText}}</h6>
+          </div>
+        </div>
+        <hr>
+        {% endif %}
+        {% endfor %}
+        <div class="row">
+          <div class="w-25 ">
+            <img class="d-block m-auto justify-content-center" style="height: 75px;"
+              src="media/{{request.user.profile.image}}" alt="">
+          </div>
+          <div w-75>
+            <!-- comment form  -->
+            <form action="{% url 'addcomments' post.id %}" method="POST">
+              {% csrf_token %}
+              {{Commentform}}
+              <!-- <input class="btn btn-primary mt-2" type="submit" name="PostComment" id="PostComment" value="Post Comment"> -->
+              <button class="btn btn-primary mt-2" type="submit">Post Comment</button>
+            </form>
+          </div>
+        </div>
+
       </div>
       {% elif post.postImage == "" %}
       <br>
-      <div class="card w-100 p-2" style="width: 18rem;">
+      <div class="card w-75 d-block m-auto p-2" style="width: 18rem;">
         <h4 class="p-2 text-uppercase">{{post.user}}</h4>
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
         <div class="row">
           <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-          <button type="button" class="btn btn-primary col-4 m-2"><a href="{% url 'comments' %}">Comments</a></button>
+        </div>
+        <hr>
+        <!-- post comments  -->
+        <h6 class="mb-3"><b>Comments</b></h6>
+        {% for comments in comment_Post %}
+        {% if post.id == comments.post.id %}
+        <div class="row">
+          <div class="col-2 m-auto pr-3">
+            <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
+            <h6>{{ comments.user.username }}</h6>
           </div>
+          <div class="col-10 m-auto d-flex justify-content-lg-start">
+            {{comments.commentText}}
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
       </div>
       {% endif %}
       {% endfor %}
     </div>
+    <!-- post rendering ends -->
 
     <!-- side bar  -->
     <div class="col-lg-1">
@@ -52,7 +104,7 @@
         <div class="card-header">
           Featured
         </div>
-        <ul class="list-group list-group-flush">
+        <ul class="list-group list-group-flush">  
           <li class="list-group-item"><a href="">News Feeds</a></li>
           <li class="list-group-item"><a href="{% url 'mypost' %}">My post</a></li>
           <li class="list-group-item"><a href="">Find Others</a></li>
