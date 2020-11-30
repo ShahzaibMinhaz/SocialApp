@@ -11,7 +11,7 @@ from .forms import (CreateUserForm,
                     Userupdateprofile,
                     CreatePost,
                     CommentsPost)
-from .models import profile as pf,Post,Comments,friendrequest
+from .models import profile as pf,Post,Comments,friendrequest,friends
 
 # Create your views here.
 
@@ -164,3 +164,11 @@ def sendfriendrequset(request,user_id,friends_id):
 def getfriendrequest(request):
     getfriendrequestdata = friendrequest.objects.all()
     return render(request,'friendrequest.html',{'getfriendrequestdata':getfriendrequestdata})
+
+def friend(request):
+    friend = friends.objects.all()
+    print(friend)
+    context = {
+        'friends':friend
+    }
+    return render(request,'Friends.html',context)

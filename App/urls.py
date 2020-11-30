@@ -15,7 +15,8 @@ urlpatterns = [
     path('delete_comment/<int:id>',views.delete_comment,name='delete_comment'),
     path('findothers',views.findothers,name='findothers'),
     path('friendrequest/<int:user_id>/<int:friends_id>',views.sendfriendrequset,name='friendrequest'),
-    path('getfriendrequest',views.getfriendrequest,name='getfriendrequest')
+    path('getfriendrequest',views.getfriendrequest,name='getfriendrequest'),
+    path('friends',views.friend,name='friends')
 ]
 
 if settings.DEBUG:
