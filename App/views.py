@@ -11,7 +11,7 @@ from .forms import (CreateUserForm,
                     Userupdateprofile,
                     CreatePost,
                     CommentsPost)
-from .models import profile as pf,Post,Comments,friendrequest,friends
+from .models import profile as pf,Post,Comments,friends
 
 # Create your views here.
 
@@ -118,11 +118,16 @@ def home(request):
 
 @login_required
 def Mypost(request):
+    comment_Post = Comments.objects.all()
     post = Post.objects.all()
+    CommentsPostform = CommentsPost()
     context = {
-        'Post':post
+        'Post':post,
+        'comment_Post':comment_Post,
+        'Commentform':CommentsPostform
     }
     return render(request,'MyPost.html',context)
+
 @login_required
 def addcomments(request,id):
     getPost = Post.objects.get(pk=id)
@@ -137,6 +142,7 @@ def addcomments(request,id):
             myform.save()
             return redirect('/')
 
+
 @login_required
 def delete_comment(request,id):
     print(id)
@@ -144,31 +150,71 @@ def delete_comment(request,id):
     getcomments.delete()
     return redirect('/')
 
+
 @login_required
 def findothers(request):
     user = User.objects.all()
-    friendrequestdata = friendrequest.objects.all()
-    # for user in user:
-    #     print(user.profile.image)
-    #     print(user.username)
-    return render(request,'findothers.html',{'user':user,'friendrequestdata':friendrequestdata})
+    # filter friends data   
+    friend = friends.objects.filter(current_user=request.user)
+    print(friend)
+    findotherdata = []
+    for data in friend:
+        if data.current_user == request.user and data.status != "Ignore":
+            print(data.friend_user)
+            findotherdata.append(data.friend_user)
+    friend = friends.objects.filter(friend_user=request.user)
+    print(friend)
+    for data in friend:
+        if data.friend_user == request.user and data.status != "Ignore":
+            if data.current_user in findotherdata:
+                continue
+            else:
+                findotherdata.append(data.current_user)
+    return render(request,'findothers.html',{'user':user,'findotherdata':findotherdata})
+
 
 @login_required
 def sendfriendrequset(request,user_id,friends_id):
     userdata = User.objects.get(pk=user_id)
     frienddata = User.objects.get(pk=friends_id)
-    sendrequest = friendrequest.objects.create(send=userdata,recieve=frienddata)
+    sendrequest = friends.objects.create(current_user=userdata,friend_user=frienddata,status="Requested")
     print('friend requset send ') 
     return redirect('/findothers')
 
-def getfriendrequest(request):
-    getfriendrequestdata = friendrequest.objects.all()
-    return render(request,'friendrequest.html',{'getfriendrequestdata':getfriendrequestdata})
 
+def getfriendrequest(request):
+    getfriendrequest = friends.objects.filter(friend_user=request.user,status="Requested")
+    return render(request,'friendrequest.html',{'getfriendrequest':getfriendrequest})
+
+
+@login_required
 def friend(request):
-    friend = friends.objects.all()
+    friend = friends.objects.filter(current_user=request.user,status='Confirmed')
     print(friend)
+    friend2 = friends.objects.filter(friend_user=request.user,status='Confirmed')
+    print(friend2)
     context = {
-        'friends':friend
+        'friends':friend,
+        'friend2':friend2
     }
     return render(request,'Friends.html',context)
+
+@login_required
+def accept_friendrequest(request,friendstable_id):
+    print(friendstable_id)
+    getfrienddata = friends.objects.get(pk=friendstable_id)
+    getfrienddata.status = "Confirmed"
+    getfrienddata.save()
+    return redirect('/getfriendrequest')
+
+@login_required
+def unfriend(request,friendstable_id):
+    print('id',friendstable_id)
+    getfrienddata = friends.objects.get(pk=friendstable_id)
+    getfrienddata.status = "Ignore"
+    getfrienddata.save()
+    return redirect('/friends')
+
+@login_required
+def updateLike(request):
+    pass

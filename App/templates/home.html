@@ -26,9 +26,15 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <div class="row">
-          <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-        </div>
+        <form action="">
+          <div class="row">
+            {% if post.user.profile in post.postLikes.all %}
+              <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+            {% elif post.user.profile not in post.postLikes.all %}
+              <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+            {% endif %}
+          </div>
+        </form>
         <hr>
         <h6 class="mb-3"><b>Comments</b></h6>
 
@@ -78,9 +84,15 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <div class="row">
-          <button type="button" class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-        </div>
+        <form action="">
+          <div class="row">
+            {% if post.user.profile in post.postLikes.all %}
+              <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+            {% elif post.user.profile not in post.postLikes.all %}
+              <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+            {% endif %}
+          </div>
+        </form>
         <hr>
         <!-- post comments  -->
         <h6 class="mb-3"><b>Comments</b></h6>
@@ -139,7 +151,7 @@
           <li class="list-group-item"><a href="{% url 'friends' %}">Friends</a></li>
         </ul>
       </div>
-    </div>  
+    </div>
   </div>
 </div>
 {% endblock content  %}

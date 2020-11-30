@@ -25,16 +25,23 @@ class Comments(models.Model):
     # def __str__(self):
     #     return self.user.username
 
-class friendrequest(models.Model):
-    send = models.ForeignKey(User,on_delete=models.CASCADE,related_name='sender')
-    recieve = models.ForeignKey(User,on_delete=models.CASCADE,related_name='reciever')
+# class friendrequest(models.Model):
+#     send = models.ForeignKey(User,on_delete=models.CASCADE,related_name='sender')
+#     recieve = models.ForeignKey(User,on_delete=models.CASCADE,related_name='reciever')
+
 
     # def __str__(self):
     #     return self.send.username
 
 class friends(models.Model):
-    send = models.ForeignKey(User,on_delete=models.CASCADE,related_name='user')
-    recieve = models.ForeignKey(User,on_delete=models.CASCADE,related_name='friend')
+    status = (
+        ("Requested", "requested"),
+        ("Confirmed", "confirmed"),
+        ("Ignore", "Ignore"),
+    )
+    current_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='current_user')
+    friend_user = models.ForeignKey(User,on_delete=models.CASCADE,related_name='friend_user')
+    status = models.CharField(max_length=20,choices=status,null=True)
 
     # def __str__(self):
     #     return self.send,username

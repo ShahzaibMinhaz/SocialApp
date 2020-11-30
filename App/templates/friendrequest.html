@@ -7,24 +7,21 @@
 
         </div>
         <div class="col-lg-9">
-            <!-- {% for requestdata in getfriendrequestdata %}
-               {% if requestdata.recieve == request.user %}
-               <div class="row m-5">
-                    <div class="w-25 ">
-                        <img style="height:150px" src="media/{{requestdata.send.profile.image}}" alt="">
-                        <h6 class="mr-3">{{requestdata.send}}</h6>
-                    </div>
-                    <div class="w-75 d-flex justify-content-end align-items-center">
-
-                        <form action="{% url 'friendrequest' user_id=request.user.id friends_id=user.id %}">
-                            {% csrf_token %}
-                            <button class="btn btn-primary float-right " type="submit">Accept Request</button>
-                        </form>
-                    </div>
+            {% for getfriendrequest in getfriendrequest %}
+            <div class="row m-5">
+                <div class="w-25 ">
+                    <img style="height:150px" src="media/{{getfriendrequest.current_user.profile.image}}" alt="">
+                    <h6 class="mr-3">{{getfriendrequest.current_user}}</h6>
                 </div>
-                <hr>
-               {% endif %}
-            {% endfor %} -->
+                <div class="w-75 d-flex justify-content-end align-items-center">
+                    <form action="{% url 'acceptfriendrequest' getfriendrequest.id %}">
+                        {% csrf_token %}
+                        <button class="btn btn-primary float-right " type="submit">Accept Request</button>
+                    </form>
+                </div>
+            </div>
+            <hr>
+            {% endfor %}
         </div>
         <div class="col-lg-1">
             <div class="card" style="width: 18rem;">

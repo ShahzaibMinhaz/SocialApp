@@ -4,10 +4,31 @@
 <div class="container">
     <div class="row m-3">
         <div class="col-lg-1">
-
         </div>
         <div class="col-lg-9">
-          {% for user in user %}
+        <!-- {% for findotherdata in findotherdata %}
+            {{findotherdata.username}}
+        {% endfor %} -->
+        {% for user in user %}
+        {% if user not in findotherdata %}
+        {% if user.username != request.user.username %}
+        <div class="row m-5">
+            <div class="w-25 ">
+                <img style="height:150px" src="media/{{user.profile.image}}" alt="">
+                <h6 class="mr-3">{{user.username}}</h6>
+            </div>
+            <div class="w-75 d-flex justify-content-end align-items-center">
+                <form action="{% url 'friendrequest' user_id=request.user.id friends_id=user.id %}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary float-right " type="submit">Send Friend Request</button>
+                </form>
+            </div>
+          </div>
+          <hr>
+        {% endif %}    
+        {% endif %}
+        {% endfor %}
+          <!-- {% for user in user %}
            {% if user.username != request.user.username %}
             <div class="row m-5">
             <div class="w-25 ">
@@ -15,9 +36,6 @@
                 <h6 class="mr-3">{{user.username}}</h6>
             </div>
             <div class="w-75 d-flex justify-content-end align-items-center">
-                {% if user.username in friendrequestdata.recieve %}
-                    {{user.name}}
-                {% endif %}
                 <form action="{% url 'friendrequest' user_id=request.user.id friends_id=user.id %}">
                     {% csrf_token %}
                     <button class="btn btn-primary float-right " type="submit">Send Friend Request</button>
@@ -26,10 +44,10 @@
           </div>
           <hr>
            {% endif %}
-          {% endfor %}  
-          {% for friendrequestdata in friendrequestdata %}
+          {% endfor %}   -->
+          <!-- {% for friendrequestdata in friendrequestdata %}
             {{friendrequestdata.recieve}}
-          {% endfor %}
+          {% endfor %} -->
          
         </div>
         <div class="col-lg-1">

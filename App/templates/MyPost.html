@@ -24,21 +24,53 @@
                 <div class="card-body">
                     <p class="card-text">{{ post.postText }}</p>
                 </div>
-                <div class="row">
-                    <button type="button"
-                        class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-                </div>
+                <form action="">
+                    <div class="row">
+                      {% if post.user.profile in post.postLikes.all %}
+                        <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+                      {% elif post.user.profile not in post.postLikes.all %}
+                        <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+                      {% endif %}
+                    </div>
+                </form>
                 <hr>
+                <!-- post comments  -->
                 <h6 class="mb-3"><b>Comments</b></h6>
+                {% for comments in comment_Post %}
+                {% if post.id == comments.post.id %}
+                <!-- delete icon function  -->
+                {% if comments.user.username == request.user.username %}
+                <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right"
+                        aria-hidden="true"></i></a>
+                {% endif %}
+                <!-- delete icon function ends -->
                 <div class="row">
                     <div class="col-2 m-auto pr-3">
-                        <img style="height: 50px;" src="media/{{post.user.profile.image}}" alt="">
-                        <h6>{{post.user}}</h6>
+                        <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
+                        <h6>{{ comments.user.username }}</h6>
                     </div>
                     <div class="col-10 m-auto d-flex justify-content-lg-start">
-                        Hello World !
+                        {{comments.commentText}}
                     </div>
                 </div>
+                <hr>
+                {% endif %}
+                {% endfor %}
+                <div class="row">
+                    <div class="w-25 ">
+                      <img class="d-block m-auto justify-content-center" style="height: 75px;"
+                        src="media/{{request.user.profile.image}}" alt="">
+                    </div>
+                    <div w-75>
+                      <!-- comment form  -->
+                      <form action="{% url 'addcomments' post.id %}" method="POST">
+                        {% csrf_token %}
+                        {{Commentform}}
+                        <!-- <input class="btn btn-primary mt-2" type="submit" name="PostComment" id="PostComment" value="Post Comment"> -->
+                        <button class="btn btn-primary mt-2" type="submit">Post Comment</button>
+                      </form>
+                    </div>
+                  </div>
             </div>
             {% elif post.postImage == "" %}
             <br>
@@ -47,45 +79,58 @@
                 <div class="card-body">
                     <p class="card-text">{{ post.postText }}</p>
                 </div>
-                <div class="row">
-                    <button type="button"
-                        class="btn btn-primary col-4 mr-2 m-2">Likes({{post.postLikes.count}})</button>
-                </div>
+                <form action="">
+                    <div class="row">
+                      {% if post.user.profile in post.postLikes.all %}
+                        <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+                      {% elif post.user.profile not in post.postLikes.all %}
+                        <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+                      {% endif %}
+                    </div>
+                </form>
                 <hr>
+                <!-- post comments  -->
                 <h6 class="mb-3"><b>Comments</b></h6>
+                {% for comments in comment_Post %}
+                {% if post.id == comments.post.id %}
+                <!-- delete icon function  -->
+                {% if comments.user.username == request.user.username %}
+                <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right"
+                        aria-hidden="true"></i></a>
+                {% endif %}
+                <!-- delete icon function ends -->
                 <div class="row">
                     <div class="col-2 m-auto pr-3">
-                        <img style="height: 50px;" src="media/{{post.user.profile.image}}" alt="">
-                        <h6>{{post.user}}</h6>
+                        <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
+                        <h6>{{ comments.user.username }}</h6>
                     </div>
                     <div class="col-10 m-auto d-flex justify-content-lg-start">
-                        Hello World !
+                        {{comments.commentText}}
                     </div>
                 </div>
+                <hr>
+                {% endif %}
+                {% endfor %}
+                <div class="row">
+                    <div class="w-25 ">
+                      <img class="d-block m-auto justify-content-center" style="height: 75px;"
+                        src="media/{{request.user.profile.image}}" alt="">
+                    </div>
+                    <div w-75>
+                      <!-- comment form  -->
+                      <form action="{% url 'addcomments' post.id %}" method="POST">
+                        {% csrf_token %}
+                        {{Commentform}}
+                        <!-- <input class="btn btn-primary mt-2" type="submit" name="PostComment" id="PostComment" value="Post Comment"> -->
+                        <button class="btn btn-primary mt-2" type="submit">Post Comment</button>
+                      </form>
+                    </div>
+                  </div>
             </div>
             {% endif %}
             {% endif %}
             {% endfor %}
 
-            <!-- <br><div class="card w-100" style="width: 18rem;">
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div>
-                <br><div class="card w-100" style="width: 18rem;">
-                    <img class="card-img-top" src="{% static 'images/icons/favicon.ico' %}" alt="Card image cap">
-                    <hr>
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div>
-                <br><div class="card w-100" style="width: 18rem;">
-                    <img class="card-img-top" src="{% static 'images/icons/favicon.ico' %}" alt="Card image cap">
-                    <hr>
-                    <div class="card-body">
-                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
-                </div> -->
         </div>
 
         <!-- side bar  -->

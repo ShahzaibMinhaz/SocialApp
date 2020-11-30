@@ -16,7 +16,10 @@ urlpatterns = [
     path('findothers',views.findothers,name='findothers'),
     path('friendrequest/<int:user_id>/<int:friends_id>',views.sendfriendrequset,name='friendrequest'),
     path('getfriendrequest',views.getfriendrequest,name='getfriendrequest'),
-    path('friends',views.friend,name='friends')
+    path('acceptfriendrequest/<int:friendstable_id>',views.accept_friendrequest,name='acceptfriendrequest'),
+    path('unfriend/<int:friendstable_id>',views.unfriend,name='unfriend'),
+    path('friends',views.friend,name='friends'),
+    path('updatelike',views.updateLike,name='updatelike')
 ]
 
 if settings.DEBUG:
