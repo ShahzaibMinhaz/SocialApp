@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="container"><br>
-    <div class="row">
+    <div class="row m-3">
         <div class="col-lg-1">
         </div>
         <!-- post center side  -->
@@ -27,9 +27,9 @@
                 <form action="{% url 'updatelike' post.id %}">
                     <div class="row">
                       {% if request.user.profile in post.postLikes.all %}
-                        <button type="submit" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+                        <button type="submit" class="btn btn-primary col-4 ml-3">Likes ({{post.postLikes.count}})</button>
                       {% elif request.user.profile not in post.postLikes.all %}
-                        <button type="submit" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+                        <button type="submit" class="btn btn-light col-4 ml-3 border">Likes ({{post.postLikes.count}})</button>
                       {% endif %}
                     </div>
                 </form>
@@ -38,13 +38,14 @@
                 <h6 class="mb-3"><b>Comments</b></h6>
                 {% for comments in comment_Post %}
                 {% if post.id == comments.post.id %}
+                <span class="float-right">1 minute</span><br>
                 <!-- delete icon function  -->
                 {% if comments.user.username == request.user.username %}
-                <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right"
+                <a style="z-index: 10;" href="{% url 'delete_comment' comments.id %}"><i class=" fa fa-trash fa-lg float-right mr-3 mt-3"
                         aria-hidden="true"></i></a>
                 {% endif %}
                 <!-- delete icon function ends -->
-                <div class="row">
+                <div class="row" style="z-index: -1;">
                     <div class="col-2 m-auto pr-3">
                         <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
                         <h6>{{ comments.user.username }}</h6>
@@ -82,9 +83,9 @@
                 <form action="{% url 'updatelike' post.id %}">
                     <div class="row">
                       {% if request.user.profile in post.postLikes.all %}
-                        <button type="submit" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+                        <button type="submit" class="btn btn-primary col-4 ml-3">Likes ({{post.postLikes.count}})</button>
                       {% elif request.user.profile not in post.postLikes.all %}
-                        <button type="submit" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+                        <button type="submit" class="btn btn-light col-4 ml-3 border">Likes ({{post.postLikes.count}})</button>
                       {% endif %}
                     </div>
                 </form>
@@ -94,8 +95,9 @@
                 {% for comments in comment_Post %}
                 {% if post.id == comments.post.id %}
                 <!-- delete icon function  -->
+                <span class="float-right">1 minute</span><br>
                 {% if comments.user.username == request.user.username %}
-                <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right"
+                <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right mr-3 mt-3"
                         aria-hidden="true"></i></a>
                 {% endif %}
                 <!-- delete icon function ends -->
@@ -154,4 +156,9 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" >
+
+console.log('javascript')
+
+</script>
 {% endblock content  %}

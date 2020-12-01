@@ -13,6 +13,7 @@ class Post(models.Model):
     postText = models.CharField(max_length=100)
     postImage = models.ImageField(upload_to="post_pics")
     postLikes = models.ManyToManyField(profile)
+    postdate = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.postText
@@ -21,6 +22,7 @@ class Comments(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
     post = models.ForeignKey(Post,on_delete=models.CASCADE)
     commentText = models.CharField(max_length=50)
+    commentdate = models.DateTimeField(auto_now=True)
 
     # def __str__(self):
     #     return self.user.username
