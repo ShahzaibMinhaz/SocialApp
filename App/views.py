@@ -216,5 +216,12 @@ def unfriend(request,friendstable_id):
     return redirect('/friends')
 
 @login_required
-def updateLike(request):
-    pass
+def updateLike(request,id):
+    getpost = Post.objects.get(pk=id)
+    # print(getpost.postLikes.all())
+    if request.user.profile in getpost.postLikes.all():
+        getpost.postLikes.remove(request.user.profile)
+    else:
+        getpost.postLikes.add(request.user.profile)
+    return redirect('/')
+    

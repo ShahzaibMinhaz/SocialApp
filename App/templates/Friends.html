@@ -10,8 +10,8 @@
             {% for friend in friends %}
             <div class="row m-5">
                 <div class="w-25 ">
-                    <img style="height:150px" src="media/{{friend.current_user.profile.image}}" alt="">
-                    <h6 class="mr-3">{{friend.current_user.username}}</h6>
+                    <img style="height:150px" src="media/{{friend.friend_user.profile.image}}" alt="">
+                    <h6 class="mr-3">{{friend.friend_user.username}}</h6>
                 </div>
                 <div class="w-75 d-flex justify-content-end align-items-center">
 
@@ -26,8 +26,8 @@
             {% for friend in friend2 %}
             <div class="row m-5">
                 <div class="w-25 ">
-                    <img style="height:150px" src="media/{{friend.friend_user.profile.image}}" alt="">
-                    <h6 class="mr-3">{{friend.friend_user.username}}</h6>
+                    <img style="height:150px" src="media/{{friend.current_user.profile.image}}" alt="">
+                    <h6 class="mr-3">{{friend.current_user.username}}</h6>
                 </div>
                 <div class="w-75 d-flex justify-content-end align-items-center">
 

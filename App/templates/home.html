@@ -26,12 +26,12 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <form action="">
+        <form action="{% url 'updatelike' post.id %}">
           <div class="row">
-            {% if post.user.profile in post.postLikes.all %}
-              <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
-            {% elif post.user.profile not in post.postLikes.all %}
-              <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+            {% if request.user.profile in post.postLikes.all %}
+              <button type="submit" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+            {% elif request.user.profile not in post.postLikes.all %}
+              <button type="submit" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
             {% endif %}
           </div>
         </form>
@@ -84,12 +84,12 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <form action="">
+        <form action="{% url 'updatelike' post.id %}">
           <div class="row">
-            {% if post.user.profile in post.postLikes.all %}
-              <button type="button" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
-            {% elif post.user.profile not in post.postLikes.all %}
-              <button type="button" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
+            {% if request.user.profile in post.postLikes.all %}
+              <button type="submit" class="btn btn-primary col-4 ml-3">Likes({{post.postLikes.count}})</button>
+            {% elif request.user.profile not in post.postLikes.all %}
+              <button type="submit" class="btn btn-light col-4 ml-3 border">Likes({{post.postLikes.count}})</button>
             {% endif %}
           </div>
         </form>
