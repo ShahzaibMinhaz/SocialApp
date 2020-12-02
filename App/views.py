@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render,redirect,HttpResponse
 from django.contrib import messages
 from django.contrib.auth import (authenticate,
                                  login as auth_login,logout,
@@ -12,6 +12,7 @@ from .forms import (CreateUserForm,
                     CreatePost,
                     CommentsPost)
 from .models import profile as pf,Post,Comments,friends
+from django.db.models import Q
 
 # Create your views here.
 
@@ -224,4 +225,10 @@ def updateLike(request,id):
     else:
         getpost.postLikes.add(request.user.profile)
     return redirect('/')
-    
+
+def datafriends(request):
+    friend = friends.objects.filter(
+        Q(current_user=request.user)
+        | Q(friend_user=request.user)
+    )[1]
+    return HttpResponse(friend.friend_user)

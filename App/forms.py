@@ -33,7 +33,7 @@ class CreatePost(forms.ModelForm):
 		fields = ['postImage','postText']
 
 class CommentsPost(forms.ModelForm):
-	commentText = forms.CharField( label="" ,widget=forms.Textarea(attrs={"placeholder":"Enter Comments",'class':'w-100',"rows":2, "cols":18}))
+	commentText = forms.CharField( label="" ,widget=forms.Textarea(attrs={"placeholder":"Enter Comments",'class':'w-100 commentText',"rows":2, "cols":18}))
 	class Meta:
 		model = Comments
 		fields = ['commentText']

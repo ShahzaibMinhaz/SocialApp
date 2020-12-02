@@ -19,7 +19,8 @@ urlpatterns = [
     path('acceptfriendrequest/<int:friendstable_id>',views.accept_friendrequest,name='acceptfriendrequest'),
     path('unfriend/<int:friendstable_id>',views.unfriend,name='unfriend'),
     path('friends',views.friend,name='friends'),
-    path('updatelike/<int:id>',views.updateLike,name='updatelike')
+    path('updatelike/<int:id>',views.updateLike,name='updatelike'),
+    path('datafriends',views.datafriends,name='datafriends')
 ]
 
 if settings.DEBUG:
