@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect,HttpResponse
+from django.http import JsonResponse
 from django.contrib import messages
 from django.contrib.auth import (authenticate,
                                  login as auth_login,logout,
@@ -11,8 +12,10 @@ from .forms import (CreateUserForm,
                     Userupdateprofile,
                     CreatePost,
                     CommentsPost)
-from .models import profile as pf,Post,Comments,friends
+from .models import profile as pf,Post,Comments,friends,profile
 from django.db.models import Q
+from django.utils.timesince import timesince
+import datetime
 
 # Create your views here.
 
@@ -130,26 +133,43 @@ def Mypost(request):
     return render(request,'MyPost.html',context)
 
 @login_required
-def addcomments(request,id):
+def addcomments(request):
+    id = request.POST['post_id']
+    comment = request.POST['commentText']
     getPost = Post.objects.get(pk=id)
-    print(id)
-    print(request.POST)
-    if request.method == "POST":
-        CommentsPostform = CommentsPost(request.POST)
-        if CommentsPostform.is_valid():
-            myform=CommentsPostform.save(commit=False)
-            myform.post= getPost
-            myform.user=request.user
-            myform.save()
-            return redirect('/')
+    comment = Comments.objects.create(user=request.user,post=getPost,commentText=comment)
+    print(request.user.profile.image.url)
+    # time = timesince(comment.commentdate,datetime.datetime.now())
+    print(comment.commentdate," ",datetime.datetime.now())
+    context = {
+        "comment_id":comment.id,
+        "imagesource" : request.user.profile.image.url,
+        "name" : request.user.username,
+        "Status" : 'true',
+        'date':comment.commentdate
+    }
+    return JsonResponse(context)
+    # getPost = Post.objects.get(pk=id)
+    # print(id)
+    # print(request.POST)
+    # if request.method == "POST":
+    #     CommentsPostform = CommentsPost(request.POST)
+    #     if CommentsPostform.is_valid():
+    #         myform=CommentsPostform.save(commit=False)
+    #         myform.post= getPost
+    #         myform.user=request.user
+    #         myform.save()
+    #         return redirect('/')
 
 
 @login_required
-def delete_comment(request,id):
+def delete_comment(request):
+    id = request.POST['comment_id']
     print(id)
     getcomments = Comments.objects.get(pk=id)
     getcomments.delete()
-    return redirect('/')
+    return HttpResponse("sucess")
+    # return redirect('/')
 
 
 @login_required
@@ -217,14 +237,26 @@ def unfriend(request,friendstable_id):
     return redirect('/friends')
 
 @login_required
-def updateLike(request,id):
+def updateLike(request):
+    id = request.POST['Likepost_id']
     getpost = Post.objects.get(pk=id)
-    # print(getpost.postLikes.all())
     if request.user.profile in getpost.postLikes.all():
         getpost.postLikes.remove(request.user.profile)
     else:
         getpost.postLikes.add(request.user.profile)
-    return redirect('/')
+  
+    context = {
+        'count': getpost.postLikes.count()
+    }
+    return JsonResponse(context)
+
+    # getpost = Post.objects.get(pk=id)
+    # # print(getpost.postLikes.all())
+    # if request.user.profile in getpost.postLikes.all():
+    #     getpost.postLikes.remove(request.user.profile)
+    # else:
+    #     getpost.postLikes.add(request.user.profile)
+    # return redirect('/')
 
 def datafriends(request):
     friend = friends.objects.filter(

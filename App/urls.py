@@ -11,15 +11,15 @@ urlpatterns = [
     path('',views.home,name='home'),
     path('logout',views.logoutuser,name='logout'),
     path('MyPost',views.Mypost,name='mypost'),
-    path('addcomments/<int:id>',views.addcomments,name='addcomments'),
-    path('delete_comment/<int:id>',views.delete_comment,name='delete_comment'),
+    path('addcomments',views.addcomments,name='addcomments'),
+    path('delete_comment',views.delete_comment,name='delete_comment'),
     path('findothers',views.findothers,name='findothers'),
     path('friendrequest/<int:user_id>/<int:friends_id>',views.sendfriendrequset,name='friendrequest'),
     path('getfriendrequest',views.getfriendrequest,name='getfriendrequest'),
     path('acceptfriendrequest/<int:friendstable_id>',views.accept_friendrequest,name='acceptfriendrequest'),
     path('unfriend/<int:friendstable_id>',views.unfriend,name='unfriend'),
     path('friends',views.friend,name='friends'),
-    path('updatelike/<int:id>',views.updateLike,name='updatelike'),
+    path('updatelike',views.updateLike,name='updatelike'),
     path('datafriends',views.datafriends,name='datafriends')
 ]
 

@@ -3,10 +3,10 @@
 {% block content %}
 <div class="container"><br>
   <div class="row m-3">
-    <div class="col-lg-1">
+    <div class="col-lg-1 col-sm-12 col-md-12 ">
     </div>
     <!-- post center side  -->
-    <div class="col-lg-9">
+    <div class="col-lg-9 col-sm-12 col-md-12 col-12">
       <!-- post creation form starts  -->
       <form action="" method="POST" class="border p-3 w-75 d-block m-auto" enctype="multipart/form-data">
         {% csrf_token %}
@@ -27,12 +27,14 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <form action="{% url 'updatelike' post.id %}">
+        <form action="">
           <div class="row">
             {% if request.user.profile in post.postLikes.all %}
-              <button type="submit" class="btn btn-primary col-4 ml-3">Likes ({{post.postLikes.count}})</button>
+            <button data-post_id="{{post.id}}" type="button" class="btn btn-primary col-4 ml-3 likebutton">Likes
+              ({{post.postLikes.count}})</button>
             {% elif request.user.profile not in post.postLikes.all %}
-              <button type="submit" class="btn btn-light col-4 ml-3 border">Likes ({{post.postLikes.count}})</button>
+            <button data-post_id="{{post.id}}" type="button" class="btn btn-light col-4 ml-3 border likebutton">Likes
+              ({{post.postLikes.count}})</button>
             {% endif %}
           </div>
         </form>
@@ -42,23 +44,24 @@
         <!-- post comments  -->
         {% for comments in comment_Post %}
         {% if post.id == comments.post.id %}
-        <h6 class="float-right">{{comments.commentdate|timesince}}</h6><br>
+        <h6 class=" {{comments.commentText}}{{comments.id}} float-right">{{comments.commentdate|timesince}}</h6><br class="{{comments.commentText}}{{comments.id}}">
         <!-- delete icon function  -->
         {% if comments.user.username == request.user.username %}
-        <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right mr-3 mt-3"
-            aria-hidden="true"></i></a>
+        <button style="margin-left:0px; margin-top: 30px;"  onclick="commentdelete('{{comments.id}}','{{comments.commentText}}{{comments.id}}')"
+          class=" {{comments.commentText}}{{comments.id}} float-right mr-4 "><i class="fa fa-trash fa-lg  commentdelete"
+            aria-hidden="true"></i></button>
         {% endif %}
         <!-- delete icon function ends -->
-        <div class="row">
+        <div style="z-index: -1;" class="row {{comments.commentText}}{{comments.id}}" id='comments'>
           <div class="col-2 m-auto pr-3">
             <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
-            <h6>{{ comments.user.username }}</h6>
+            <small>{{ comments.user.username }}</small>
           </div>
           <div class="col-10 m-auto d-flex justify-content-lg-start">
             <h6>{{comments.commentText}}</h6>
           </div>
         </div>
-        <hr>
+        <hr class="{{comments.commentText}}{{comments.id}}">
         {% endif %}
         {% endfor %}
         <div class="row">
@@ -68,11 +71,12 @@
           </div>
           <div w-75>
             <!-- comment form  -->
-            <form action="{% url 'addcomments' post.id %}" method="POST">
+            <form action="" method="POST">
               {% csrf_token %}
               {{Commentform}}
               <!-- <input class="btn btn-primary mt-2" type="submit" name="PostComment" id="PostComment" value="Post Comment"> -->
-              <button id="commentSubmit" data-post_id="{{post.id}}" class="btn btn-primary mt-2 commentSubmitted" type="button">Post Comment</button>
+              <button id="commentSubmit" data-post_id="{{post.id}}" class="btn btn-primary mt-2 commentSubmitted"
+                type="button">Post Comment</button>
               <!-- onclick="submitComment(this)" -->
             </form>
           </div>
@@ -86,12 +90,14 @@
         <div class="card-body">
           <p class="card-text">{{ post.postText }}</p>
         </div>
-        <form action="{% url 'updatelike' post.id %}" >
+        <form action="">
           <div class="row">
             {% if request.user.profile in post.postLikes.all %}
-              <button type="submit" class="btn btn-primary col-4 ml-3">Likes ({{post.postLikes.count}})</button>
+            <button data-post_id="{{post.id}}" type="button" class="btn btn-primary col-4 ml-3 likebutton">Likes
+              ({{post.postLikes.count}})</button>
             {% elif request.user.profile not in post.postLikes.all %}
-              <button type="submit" class="btn btn-light col-4 ml-3 border">Likes ({{post.postLikes.count}})</button>
+            <button data-post_id="{{post.id}}" type="button" class="btn btn-light col-4 ml-3 border likebutton">Likes
+              ({{post.postLikes.count}})</button>
             {% endif %}
           </div>
         </form>
@@ -100,23 +106,24 @@
         <h6 class="mb-3"><b>Comments</b></h6>
         {% for comments in comment_Post %}
         {% if post.id == comments.post.id %}
-        <span class="float-right">{{comments.commentdate|timesince}}</span><br>
+        <h6 class=" {{comments.commentText}}{{comments.id}} float-right">{{comments.commentdate|timesince}}</h6><br class="{{comments.commentText}}{{comments.id}}">
         <!-- delete icon function  -->
         {% if comments.user.username == request.user.username %}
-        <a href="{% url 'delete_comment' comments.id %}"><i class="fa fa-trash fa-lg float-right mr-3 mt-3"
-            aria-hidden="true"></i></a>
+        <button style="margin-left:0px; margin-top: 30px ;"  onclick="commentdelete('{{comments.id}}','{{comments.commentText}}{{comments.id}}')"
+          class=" {{comments.commentText}}{{comments.id}} float-right  mr-4 "><i class="fa fa-trash fa-lg  commentdelete"
+            aria-hidden="true"></i></button>
         {% endif %}
         <!-- delete icon function ends -->
-        <div class="row">
+        <div style="z-index: -1;" class="row {{comments.commentText}}{{comments.id}}" id='comments'>
           <div class="col-2 m-auto pr-3">
             <img class="border" style="height: 50px;" src="media/{{comments.user.profile.image}}" alt="">
-            <h6>{{ comments.user.username }}</h6>
+            <small>{{ comments.user.username }}</small>
           </div>
           <div class="col-10 m-auto d-flex justify-content-lg-start">
-            {{comments.commentText}}
+            <h6>{{comments.commentText}}</h6>
           </div>
         </div>
-        <hr>
+        <hr class="{{comments.commentText}}{{comments.id}}">
         {% endif %}
         {% endfor %}
         <div class="row">
@@ -126,11 +133,12 @@
           </div>
           <div w-75>
             <!-- comment form  -->
-            <form action="{% url 'addcomments' post.id %}" method="POST">
+            <form action="" method="POST">
               {% csrf_token %}
               {{Commentform}}
               <!-- <input class="btn btn-primary mt-2" type="submit" name="PostComment" id="PostComment" value="Post Comment"> -->
-              <button id="commentSubmit" data-post_id="{{post.id}}" class="btn btn-primary mt-2 commentSubmitted" type="button">Post Comment</button>
+              <button id="commentSubmit" data-post_id="{{post.id}}" class="btn btn-primary mt-2 commentSubmitted"
+                type="button">Post Comment</button>
               <!-- onclick="submitComment(this)"   -->
             </form>
           </div>
@@ -142,7 +150,7 @@
     <!-- post rendering ends -->
 
     <!-- side bar  -->
-    <div class="col-lg-1">
+    <div class="col-lg-1 col-sm-12 m-">
       <div class="card" style="width: 18rem;">
         <div class="card-header">
           Featured
@@ -158,65 +166,260 @@
     </div>
   </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"></script>
+
 <script type="text/javascript">
 
 
-var button = document.querySelectorAll(".commentSubmitted");
-button.forEach(element => {
-  element.addEventListener("click", (e) => {
-    console.log(e.target.dataset.post_id);
-    console.log(e.target.previousElementSibling.value)
-    e.target.previousElementSibling.value = ""
-})  
-});
+  var post_id, commentText, child, Likepost_id, Likeelement, comment_id, comment_position, comment_Text
+
+  // time function 
+  function time_ago(time) {
+
+    switch (typeof time) {
+      case 'number':
+        break;
+      case 'string':
+        time = +new Date(time);
+        break;
+      case 'object':
+        if (time.constructor === Date) time = time.getTime();
+        break;
+      default:
+        time = +new Date();
+    }
+    var time_formats = [
+      [60, 'seconds', 1], // 60
+      [120, '1 minute ago', '1 minute from now'], // 60*2
+      [3600, 'minutes', 60], // 60*60, 60
+      [7200, '1 hour ago', '1 hour from now'], // 60*60*2
+      [86400, 'hours', 3600], // 60*60*24, 60*60
+      [172800, 'Yesterday', 'Tomorrow'], // 60*60*24*2
+      [604800, 'days', 86400], // 60*60*24*7, 60*60*24
+      [1209600, 'Last week', 'Next week'], // 60*60*24*7*4*2
+      [2419200, 'weeks', 604800], // 60*60*24*7*4, 60*60*24*7
+      [4838400, 'Last month', 'Next month'], // 60*60*24*7*4*2
+      [29030400, 'months', 2419200], // 60*60*24*7*4*12, 60*60*24*7*4
+      [58060800, 'Last year', 'Next year'], // 60*60*24*7*4*12*2
+      [2903040000, 'years', 29030400], // 60*60*24*7*4*12*100, 60*60*24*7*4*12
+      [5806080000, 'Last century', 'Next century'], // 60*60*24*7*4*12*100*2
+      [58060800000, 'centuries', 2903040000] // 60*60*24*7*4*12*100*20, 60*60*24*7*4*12*100
+    ];
+    var seconds = (+new Date() - time) / 1000,
+      token = 'ago',
+      list_choice = 1;
+
+    if (seconds == 0) {
+      return '0 minutes'
+    }
+    if (seconds < 0) {
+      seconds = Math.abs(seconds);
+      token = 'from now';
+      list_choice = 2;
+    }
+    var i = 0,
+      format;
+    while (format = time_formats[i++])
+      if (seconds < format[0]) {
+        if (typeof format[2] == 'string')
+          return format[list_choice];
+        else
+          return Math.floor(seconds / format[2]) + ' ' + format[1] + ' ' + token;
+      }
+    return time;
+  }
+
+  function commentdelete(id,text){
+    comment_id = id
+    comment_Text = text
+    console.log(comment_id," ",comment_Text)
+    deletecomment()
+
+    console.log("deleted")
+
+    comment_position = document.querySelectorAll('.'+text)
+      comment_position.forEach(function (a) {
+        a.remove()
+    })
+
+    comment_id = null
+    comment_Text = null
+  }
+ 
+  var button = document.querySelectorAll(".likebutton");
+  button.forEach(element => {
+    element.addEventListener("click", (e) => {
+      Likepost_id = e.target.dataset.post_id
+      Likeelement = e.target
+      console.log(post_id)
+      console.log(e.target.classList)
+      if (e.target.classList.contains("btn-light")) {
+        e.target.classList.remove("btn-light")
+        e.target.classList.add("btn-primary")
+      } else {
+        e.target.classList.remove("btn-primary")
+        e.target.classList.add("btn-light")
+      }
+      UpdateLike()
+
+    })
+  });
+
+  var button = document.querySelectorAll(".commentSubmitted");
+  button.forEach(element => {
+    element.addEventListener("click", (e) => {
+      post_id = e.target.dataset.post_id
+      commentText = e.target.previousElementSibling.value
+      console.log(post_id, commentText)
+      child = e.target.parentElement.parentElement.parentElement
+      // var div = document.createElement()
+      // div.textContent = commentText;
+      // child.parentElement.insertBefore(div,child)
+      e.target.previousElementSibling.value = ""
+      saveData()
+    })
+  });
 
 
-// function submitComment(e){
-//   console.log(e.dataset.post_id);
-//   data = e.closet('textarea')
-//   console.log(data)
-// }
+
+  function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+      c_start = document.cookie.indexOf(c_name + "=");
+      if (c_start != -1) {
+        c_start = c_start + c_name.length + 1;
+        c_end = document.cookie.indexOf(";", c_start);
+        if (c_end == -1) c_end = document.cookie.length;
+        return unescape(document.cookie.substring(c_start, c_end));
+      }
+    }
+  }
+
+  function saveData() {
+    $.ajax({
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      url: "addcomments", // the endpoint
+      type: "POST", // http method
+      data: { 'post_id': post_id, 'commentText': commentText }, // data sent with the post request
+
+      // handle a successful response
+      success: function (data) {
+  
+        console.log(data.comment_id)
+        div = `<h6 id="" class="float-right ` + commentText + `` + data.comment_id + `">` + time_ago(new Date(Date.now())) + `</h6><br class="` + commentText + `` + data.comment_id + `">
+              <button style="margin-left:0px; margin-top: 30px;" onclick="commentdelete('`+ data.comment_id +`','`+ commentText + ``+ data.comment_id +`')"  class=" `+ commentText + `` + data.comment_id + ` float-right  mr-4  " ><i  class="fa fa-trash fa-lg  commentdelete" aria-hidden="true"></i></button>
+              <div style="z-index: -1;" class="row `+ commentText + `` + data.comment_id + `" id='comments'>
+                  <div class="col-2 m-auto pr-3">
+                    <img class="border" style="height: 50px;" src="`+ data.imagesource + `" alt=""> 
+                    <small>`+ data.name + `</small>
+                  </div>
+                  <div class="col-10 m-auto d-flex justify-content-lg-start">
+                    `+ commentText + `
+                  </div>
+              </div>
+              <hr class="`+ commentText + `` + data.comment_id + `">`
+
+        child.insertAdjacentHTML("beforeBegin", div);
+        div = null
+        post_id = null
+        commentText = null
+        console.log(data); // log the returned json to the console
+        // console.log("success"); // another sanity check
+      },
+
+      // handle a non-successful response
+      error: function (xhr, errmsg, err) {
+        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+          " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom    
+        child
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+    });
+  };
+
+  function UpdateLike() {
+    $.ajax({
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      url: "updatelike", // the endpoint
+      type: "POST", // http method
+      data: { 'Likepost_id': Likepost_id }, // data sent with the post request
+
+      // handle a successful response
+      success: function (data) {
+        // $('#post-text').val(''); // remove the value from the input
+        // alert(json)
+        // console.log(data)
+        // var div = document.createElement('div')
+        // div.textContent = commentText;
+
+        // var com=document.getElementById('comments');
+        // console.log(com)
+        // console.log(com.innerHTML);
+
+        // console.log(com.innerHTML);
+
+        // child.before(div);
+        // post_id = null
+        // commentText = null
+        Likeelement.innerHTML = "Likes(" + data.count + ")"
+        console.log(data.count); // log the returned json to the console
+        // console.log("success"); // another sanity check
+      },
+
+      // handle a non-successful response
+      error: function (xhr, errmsg, err) {
+        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+          " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom    
+        child
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+    });
+  };
+
+  function deletecomment() {
+    $.ajax({
+      headers: {
+        "X-CSRFToken": getCookie("csrftoken")
+      },
+      url: "delete_comment", // the endpoint
+      type: "POST", // http method
+      data: { 'comment_id': comment_id }, // data sent with the post request
+
+      // handle a successful response
+      success: function (data) {
+        // $('#post-text').val(''); // remove the value from the input
+        // alert(json)
+        // console.log(data)
+        // var div = document.createElement('div')
+        // div.textContent = commentText;
 
 
-// function getCookie(c_name) {
-//   if (document.cookie.length > 0) {
-//     c_start = document.cookie.indexOf(c_name + "=");
-//     if (c_start != -1) {
-//       c_start = c_start + c_name.length + 1;
-//       c_end = document.cookie.indexOf(";", c_start);
-//       if (c_end == -1) c_end = document.cookie.length;
-//       return unescape(document.cookie.substring(c_start, c_end));
-//     }
-//   } 
-// }
-//   function saveData() {
-//       $.ajax({
-//           headers:{
-//               "X-CSRFToken": getCookie("csrftoken")
-//           },
-//           url : "getdata/", // the endpoint
-//           type : "POST", // http method
-//           data : { 'name' : Name,'email': Email }, // data sent with the post request
 
-//           // handle a successful response
-//           success : function(data) {
-//               // $('#post-text').val(''); // remove the value from the input
-//               // alert(json)
-              
-//               console.log(data.email); // log the returned json to the console
-//             // console.log("success"); // another sanity check
-//           },
+        console.log("success"); // another sanity check
+        // comment_position.forEach(function(a) {
+        //   a.remove()
+        // })
+      },
 
-//           // handle a non-successful response
-//           error : function(xhr,errmsg,err) {
-//               $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
-//                   " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom    
-              
-//               console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
-//           }  
-//       });
-//   };
+      // handle a non-successful response
+      error: function (xhr, errmsg, err) {
+        $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: " + errmsg +
+          " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom    
+        child
+        console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+      }
+    });
+  };
+
+
+
+
 
 </script>
 {% endblock content  %}
